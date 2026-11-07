@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>CEdMA Spinny Wheel</title>
+  <link rel="icon" type="image/svg+xml" href="images/cedma-logomark-rgb.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600&family=Cormorant+Garamond:wght@600&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="header">
+  <img class="on-light" src="images/cedma-full-rgb.svg" alt="CEdMA Enterprise">
+  <img class="on-dark" src="images/cedma-full-rgb-dark.svg" alt="CEdMA Enterprise">
+  <div class="header-right">
+    <span class="label">Spin the wheel</span>
+    <button class="icon-btn" id="fsBtn" type="button" aria-label="Enter full screen" title="Full screen">
+      <svg id="fsIcon" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<main class="main">
+  <section class="wheel-area" aria-label="Wheel">
+    <div class="wheel-wrapper" id="wheelWrapper">
+      <div class="pointer" aria-hidden="true"><span class="pointer-dot"></span><span class="pointer-tri"></span></div>
+      <canvas id="wheelCanvas" role="img" aria-label="Spinning wheel"></canvas>
+      <button class="hub" id="hub" type="button" tabindex="-1" aria-hidden="true"><img class="on-light" src="images/cedma-logomark-rgb.svg" alt=""><img class="on-dark" src="images/cedma-logomark-rgb-dark.svg" alt=""></button>
+    </div>
+    <button class="spin-btn" id="spinBtn" type="button">Spin</button>
+    <div class="result" aria-live="polite">
+      <div class="result-card" id="resultCard" hidden>
+        <span class="label">Result</span>
+        <div class="result-value" id="resultValue"></div>
+        <button class="ghost-btn" id="removeWinnerBtn" type="button">Remove from wheel</button>
+      </div>
+    </div>
+  </section>
+
+  <aside class="side">
+    <section class="panel" aria-labelledby="optionsTitle">
+      <div class="panel-head">
+        <span class="label" id="optionsTitle">Options</span>
+        <span class="count" id="entryCount"></span>
+      </div>
+      <ul class="entry-list" id="entryList"></ul>
+      <div class="add-row">
+        <input class="add-input" id="addInput" placeholder="Add an option" maxlength="40" aria-label="Add an option" autocomplete="off">
+        <button class="add-btn" id="addBtn" type="button">Add</button>
+      </div>
+      <p class="hint">Paste a list to add several at once, one per line.</p>
+      <div class="row-btns">
+        <button class="small-btn" id="shuffleBtn" type="button">Shuffle order</button>
+        <button class="small-btn" id="clearAllBtn" type="button">Clear all</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <button class="history-toggle" id="historyToggle" type="button" aria-expanded="false" aria-controls="historyBody">
+        <span class="label">Spin history</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div id="historyBody" hidden>
+        <ul class="history-list" id="historyList"></ul>
+        <button class="link-btn" id="clearHistoryBtn" type="button">Clear history</button>
+      </div>
+    </section>
+  </aside>
+</main>
+
+<script src="js/wheel.js"></script>
+</body>
+</html>
