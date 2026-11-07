@@ -200,25 +200,41 @@
     }
   }
 
-  function escapeAttr(s) { return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
-
+  // Rows are built with DOM methods, and each dot's color is set through element.style rather
+  // than a style="" attribute in markup. Hosts with a Content Security Policy that disallows
+  // inline styles block style attributes, which would leave the dots empty.
   function renderEntries() {
     const list = document.getElementById('entryList');
-    list.innerHTML = '';
+    list.replaceChildren();
     entries.forEach((e, i) => {
       const li = document.createElement('li');
       li.className = 'entry-row';
-      li.innerHTML =
-        `<span class="entry-dot" style="background:${segmentFor(i).fill}"></span>` +
-        `<input class="entry-text" id="entry-${i}" value="${escapeAttr(e)}" maxlength="40" aria-label="Option ${i + 1}">` +
-        `<button class="del-btn" type="button" aria-label="Remove ${escapeAttr(e)}">&times;</button>`;
-      li.querySelector('.entry-text').addEventListener('change', function () {
+
+      const dot = document.createElement('span');
+      dot.className = 'entry-dot';
+      dot.style.backgroundColor = segmentFor(i).fill;
+
+      const input = document.createElement('input');
+      input.className = 'entry-text';
+      input.id = `entry-${i}`;
+      input.value = e;
+      input.maxLength = 40;
+      input.setAttribute('aria-label', `Option ${i + 1}`);
+
+      const del = document.createElement('button');
+      del.className = 'del-btn';
+      del.type = 'button';
+      del.textContent = '×';
+      del.setAttribute('aria-label', `Remove ${e}`);
+
+      li.append(dot, input, del);
+      input.addEventListener('change', function () {
         const v = this.value.trim();
         if (v) { entries[i] = v; } else { entries.splice(i, 1); renderEntries(); return; }
         saveEntries();
         drawWheel(currentAngle);
       });
-      li.querySelector('.del-btn').addEventListener('click', () => {
+      del.addEventListener('click', () => {
         if (spinning) return;
         entries.splice(i, 1);
         hideResult();
