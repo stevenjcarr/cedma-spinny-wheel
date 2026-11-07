@@ -32,15 +32,19 @@
       <div class="pointer" aria-hidden="true"><span class="pointer-dot"></span><span class="pointer-tri"></span></div>
       <canvas id="wheelCanvas" role="img" aria-label="Spinning wheel"></canvas>
       <button class="hub" id="hub" type="button" tabindex="-1" aria-hidden="true"><img class="on-light" src="images/cedma-logomark-rgb.svg" alt=""><img class="on-dark" src="images/cedma-logomark-rgb-dark.svg" alt=""></button>
-    </div>
-    <button class="spin-btn" id="spinBtn" type="button">Spin</button>
-    <div class="result" aria-live="polite">
-      <div class="result-card" id="resultCard" hidden>
-        <span class="label">Result</span>
-        <div class="result-value" id="resultValue"></div>
-        <button class="ghost-btn" id="removeWinnerBtn" type="button">Remove from wheel</button>
+      <div class="reveal" id="reveal" hidden>
+        <div class="reveal-disc" id="revealDisc">
+          <span class="label reveal-label">Result</span>
+          <p class="reveal-value" id="resultValue"></p>
+          <div class="reveal-actions">
+            <button class="ghost-btn" id="removeWinnerBtn" type="button">Remove from wheel</button>
+            <button class="text-btn" id="revealClose" type="button">Close</button>
+          </div>
+        </div>
       </div>
     </div>
+    <button class="spin-btn" id="spinBtn" type="button">Spin</button>
+    <p class="sr-only" id="resultAnnounce" aria-live="polite"></p>
   </section>
 
   <aside class="side">

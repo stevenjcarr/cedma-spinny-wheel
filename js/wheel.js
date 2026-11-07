@@ -38,6 +38,9 @@
   const wrapper = document.getElementById('wheelWrapper');
   const hub = document.getElementById('hub');
   const wheelArea = document.querySelector('.wheel-area');
+  const reveal = document.getElementById('reveal');
+  const revealDisc = document.getElementById('revealDisc');
+  const resultValue = document.getElementById('resultValue');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function loadEntries() {
@@ -66,7 +69,7 @@
   function resizeWheel() {
     const narrow = window.innerWidth <= 760;
     const areaW = wheelArea.clientWidth - 24;
-    const areaH = narrow ? areaW : wheelArea.clientHeight - 270;
+    const areaH = narrow ? areaW : wheelArea.clientHeight - 150;
     const size = Math.round(Math.max(200, Math.min(areaW, areaH, 760)));
     const dpr = window.devicePixelRatio || 1;
     if (size === wheelSize && canvas.width === Math.round(size * dpr)) return;
@@ -81,7 +84,8 @@
     hub.style.width = hubSize + 'px';
     hub.style.height = hubSize + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    drawWheel(currentAngle, riggedIdx);
+    drawWheel(currentAngle, lastWinnerIdx >= 0 ? lastWinnerIdx : riggedIdx);
+    if (!reveal.hidden) fitReveal();
   }
 
   function fitLabel(text, maxWidth) {
@@ -323,7 +327,39 @@
     drawWheel(currentAngle, riggedIdx);
   });
 
-  function hideResult() { document.getElementById('resultCard').hidden = true; lastWinnerIdx = -1; }
+  // Size the reveal panel to the wheel, then shrink the result text until it fits inside it
+  function fitReveal() {
+    const d = Math.round(wheelSize * 0.86);
+    revealDisc.style.setProperty('--d', d + 'px');
+    revealDisc.style.setProperty('--ring', Math.max(6, Math.round(d * 0.035)) + 'px');
+    const maxW = d * 0.7;
+    const maxH = d * 0.42;
+    resultValue.style.maxWidth = maxW + 'px';
+    const minFs = 18;
+    let fs = Math.min(d * 0.22, 160);
+    for (;;) {
+      resultValue.style.fontSize = fs + 'px';
+      if ((resultValue.scrollWidth <= maxW + 1 && resultValue.scrollHeight <= maxH) || fs <= minFs) break;
+      fs = Math.max(minFs, fs * 0.92);
+    }
+  }
+
+  function hideResult() {
+    if (!reveal.hidden) reveal.hidden = true;
+    if (lastWinnerIdx >= 0) {
+      lastWinnerIdx = -1;
+      drawWheel(currentAngle);
+    }
+  }
+
+  // Clicking anywhere on the reveal closes it, except the Remove button; so does Escape
+  reveal.addEventListener('click', e => {
+    if (e.target.closest('#removeWinnerBtn')) return;
+    hideResult();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !reveal.hidden) hideResult();
+  });
 
   function spin() {
     if (spinning || entries.length < 2) return;
@@ -371,10 +407,13 @@
     const idx = Math.floor(norm / arc) % n;
     lastWinnerIdx = idx;
     const winner = entries[idx];
-    document.getElementById('resultValue').textContent = winner;
+    resultValue.textContent = winner;
+    revealDisc.style.setProperty('--winner', segmentFor(idx).fill);
     document.getElementById('removeWinnerBtn').hidden = entries.length <= 1;
-    document.getElementById('resultCard').hidden = false;
     drawWheel(currentAngle, idx);
+    reveal.hidden = false;
+    fitReveal();
+    document.getElementById('resultAnnounce').textContent = 'Result: ' + winner;
     history.unshift({ n: history.length + 1, value: winner });
     renderHistory();
   }

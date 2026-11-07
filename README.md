@@ -7,8 +7,8 @@ A CEdMA Enterprise branded spin wheel for picking topics, speakers, or prize win
 Open `index.html` in a browser, or serve the folder from any static web host (GitHub Pages works). Then:
 
 - Edit, add, or remove options in the Options panel. Pasting a list adds one option per line.
-- Press **Spin** (or the space bar) to spin the wheel.
-- Use **Remove from wheel** after a spin to take the result out of the next draw.
+- Press **Spin** (or the space bar) to spin the wheel. When it stops, the result appears in large type over the wheel. Click it, press **Close**, or press Escape to dismiss it.
+- Use **Remove from wheel** on the result to take it out of the next draw.
 - Open **Spin history** to see earlier results for the session.
 - Use the full screen button in the header when presenting.
 
