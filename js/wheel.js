@@ -1,14 +1,16 @@
 (function () {
-  // Segment fill and label colors, from the brand palette. Light and dark segments alternate.
+  // Segment fill and label colors: a rainbow in muted, brand-matched tones.
+  // Amber Light, Standard Sage, and Signal Blue are brand colors; the others are mixed to the
+  // same saturation and depth. Every label meets at least 4.5:1 contrast on its segment.
   const SEGMENTS = [
-    { fill: '#B8893A', text: '#1C2B3A' }, // Aged Amber
-    { fill: '#F7F5F2', text: '#1C2B3A' }, // Warm White
-    { fill: '#2D6A5C', text: '#F7F5F2' }, // Standard Sage
-    { fill: '#F5ECD8', text: '#1C2B3A' }, // Amber Pale
-    { fill: '#2563A8', text: '#F7F5F2' }, // Signal Blue
-    { fill: '#D4A85A', text: '#1C2B3A' }, // Amber Light
-    { fill: '#2D3F52', text: '#F7F5F2' }, // Slate Mid
-    { fill: '#E0EFEC', text: '#2D6A5C' }  // Sage Pale
+    { fill: '#A6423A', text: '#F7F5F2' }, // Brick red
+    { fill: '#A7562A', text: '#F7F5F2' }, // Burnt orange
+    { fill: '#D4A85A', text: '#1C2B3A' }, // Amber Light (brand)
+    { fill: '#557439', text: '#F7F5F2' }, // Moss green
+    { fill: '#2D6A5C', text: '#F7F5F2' }, // Standard Sage (brand)
+    { fill: '#2563A8', text: '#F7F5F2' }, // Signal Blue (brand)
+    { fill: '#454C92', text: '#F7F5F2' }, // Indigo
+    { fill: '#744983', text: '#F7F5F2' }  // Plum
   ];
   let theme = {};
   function readTheme() {
@@ -49,11 +51,15 @@
     try { localStorage.setItem(STORE_KEY, JSON.stringify(entries)); } catch (e) {}
   }
 
-  // Avoids the first and last segment sharing a color when the count wraps the palette.
+  // With eight or fewer options, colors are spaced out so the wheel always runs the full
+  // rainbow from red to plum. With more, the rainbow repeats, and the last segment avoids
+  // matching the red segment it sits next to.
   function segmentFor(i) {
     const n = entries.length;
-    let k = i % SEGMENTS.length;
-    if (n > 1 && i === n - 1 && k === 0) k = 4;
+    const len = SEGMENTS.length;
+    if (n <= len) return SEGMENTS[Math.floor(i * len / Math.max(n, 1))];
+    let k = i % len;
+    if (i === n - 1 && k === 0) k = 4;
     return SEGMENTS[k];
   }
 
