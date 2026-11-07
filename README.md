@@ -24,7 +24,7 @@ The page follows the device's light or dark mode setting automatically.
 | `css/fonts.css` | Font declarations for the self-hosted fonts |
 | `css/styles.css` | Styles, including the light and dark theme tokens |
 | `js/wheel.js` | Wheel drawing, spinning, options, and history |
-| `fonts/` | Albert Sans, Cormorant Garamond, and DM Mono (woff2, Latin and Latin Extended), each with its licence |
+| `fonts/` | Albert Sans and DM Mono (woff2, Latin and Latin Extended), each with its licence |
 | `images/` | CEdMA Enterprise logo and logomark (color and color dark versions) |
 
 All fonts are served from the same site as the page, so it makes no requests to Google or any other third party and works fully offline. The fonts are licensed under the SIL Open Font License 1.1; the licence for each family is in its folder under `fonts/`.

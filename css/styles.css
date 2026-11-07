@@ -38,7 +38,6 @@
   --wheel-empty: #EAE7E2;
   --wheel-win: #1C2B3A;
 
-  --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Albert Sans', 'Segoe UI', Arial, sans-serif;
   --font-mono: 'DM Mono', Consolas, 'Courier New', monospace;
 }
@@ -289,9 +288,10 @@ button, input { font: inherit; color: inherit; }
 .reveal-label { font-size: max(12px, calc(var(--d) * 0.036)); }
 .reveal-value {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-weight: 600;
-  line-height: 1.04;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   color: var(--fg);
   text-wrap: balance;
   overflow-wrap: anywhere;
